@@ -24,16 +24,42 @@ class JokeManager:
         with open(self.filepath, "a") as my_jokes:
             my_jokes.write(joke_text)
 
+    def read_jokes(self):
+        try:
+            with open(self.filepath, "r") as my_file:
+                data = my_file.read()
+                return data 
+        except FileNotFoundError:
+            return "No jokes saved yet!"
 
-# 1. Boot up the system
+
+
 bot = JokeManager()
 
-# 2. Fetch data from the internet
-todays_joke = bot.fetch_joke()
+while True:
+    print("\n--- Joke Bot ---")
+    print("1. New joke")
+    print("2. Read saved jokes")
+    print("3. Exit")
 
-# 3. Prove it worked
-print("Fetched:")
-print(todays_joke)
+    choice = input("Select an option: 1, 2, 3\t> ")
 
-# 4. Save it permanently to the hard drive
-bot.save_joke(todays_joke)
+    if choice == "1":
+        joke = bot.fetch_joke()
+        print(f"\n{joke}")
+
+        save_choice = input("Save this joke? y/n: ").lower()
+        if save_choice == "y":
+            bot.save_joke(joke)
+            print("Joke saved")
+
+    elif choice == "2":
+        print()
+        print(bot.read_jokes())
+
+    elif choice == "3":
+        print("Goodbye")
+        break
+
+    else:
+        print("Invalid input. Try again")
