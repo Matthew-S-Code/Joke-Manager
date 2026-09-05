@@ -1,4 +1,4 @@
-import urllib.request, json, os
+import requests, json, os
 
 
 class JokeManager:
@@ -9,14 +9,13 @@ class JokeManager:
 
     def fetch_joke(self):
         try:
-            with urllib.request.urlopen(self.api_url) as response:
-                raw_string = response.read().decode("utf-8")
-                dict_of_joke = json.loads(raw_string)
-                if "setup" in dict_of_joke and "punchline" in dict_of_joke:
-                    setup = dict_of_joke["setup"]
-                    punchline = dict_of_joke["punchline"]
-                    both = f"{setup}\n{punchline}\n\n"
-                    return both
+            response = requests.get(self.api_url)
+            dict_of_joke = response.json()
+            if "setup" in dict_of_joke and "punchline" in dict_of_joke:
+                setup = dict_of_joke["setup"]
+                punchline = dict_of_joke["punchline"]
+                both = f"{setup}\n{punchline}\n\n"
+                return both
         except Exception as e:
             return f"Error fetching joke {e}"
 
