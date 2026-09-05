@@ -1,5 +1,10 @@
-import requests, json, os
+import requests, os
+from dotenv import load_dotenv
 
+current_folder = os.path.dirname(__file__)
+env_path = os.path.join(current_folder, ".env")
+
+load_dotenv(env_path)
 
 class JokeManager:
     def __init__(self):
@@ -9,6 +14,7 @@ class JokeManager:
 
     def fetch_joke(self):
         try:
+            print("My hidden key is:", os.getenv("MY_SECRET_KEY"))
             response = requests.get(self.api_url)
             dict_of_joke = response.json()
             if "setup" in dict_of_joke and "punchline" in dict_of_joke:
@@ -30,7 +36,6 @@ class JokeManager:
                 return data 
         except FileNotFoundError:
             return "No jokes saved yet!"
-
 
 
 bot = JokeManager()
