@@ -14,8 +14,11 @@ class JokeManager:
 
     def fetch_joke(self):
         try:
-            print("My hidden key is:", os.getenv("MY_SECRET_KEY"))
-            response = requests.get(self.api_url)
+            secret = os.getenv("MY_SECRET_KEY")
+            headers = {
+                "Authorization": f"Bearer{secret}"
+            }
+            response = requests.get(self.api_url, headers=headers)
             dict_of_joke = response.json()
             if "setup" in dict_of_joke and "punchline" in dict_of_joke:
                 setup = dict_of_joke["setup"]
